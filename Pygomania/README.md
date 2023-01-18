@@ -1,6 +1,6 @@
 # Pygomania
 ## The origin of the game
-After playing Iron Snout, we (MartinWho2 and eliot-portevin) decided to create a similar game to improve our python skills. To give credit where is due, MartinWho2 ended up doing most of the programming after two weeks or so, since eliot-portevin found better things to do.
+After playing Iron Snout, we (MartinWho2 and eliot-portevin) decided to create a similar game to improve our python skills. To give credit where is due, MartinWho2 ended up doing all the programming after two weeks or so, since eliot-portevin found better things to do.
 
 ## The game
 
