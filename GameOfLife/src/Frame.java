@@ -6,7 +6,7 @@ public class Frame extends JFrame {
         setSize(Game.W, Game.H);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
+        setResizable(true);
         setLocationRelativeTo(null);
     }
 }

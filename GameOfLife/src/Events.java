@@ -49,11 +49,14 @@ public class Events implements ActionListener, MouseListener, MouseMotionListene
     }
 
     private void changeState(MouseEvent e) {
-        if (0 <= e.getX() && e.getX() < Game.W && 0 <= e.getY() && e.getY() < Game.H) {
-            int x = e.getX() / Game.blockW;
-            int y = e.getY() / Game.blockW;
 
-            if (!Game.grid[x][y]) Game.grid[x][y] = true;
+        if (0 <= e.getX() && e.getX() < Game.W && 0 <= e.getY() && e.getY() < Game.H) {
+            int x = (e.getX() - Game.xOffset) / Game.blockW;
+            int y = (e.getY() - Game.yOffset) / Game.blockW;
+
+            if (0 <= x && x < Game.grid.length && 0 <= y && y < Game.grid[0].length) {
+                if (!Game.grid[x][y]) Game.grid[x][y] = true;
+            }
 
             this.panel.repaint();
         }

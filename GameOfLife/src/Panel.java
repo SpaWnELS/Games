@@ -25,18 +25,22 @@ public class Panel extends JPanel {
         // Draw Game.grid
         if (Game.gridVisible) {
             for (int x=0; x<=Game.grid.length; x++) {
-                g.drawLine(x * Game.blockW, 0, x * Game.blockW, Game.H);
+                g.drawLine(Game.xOffset + x * Game.blockW, Game.yOffset,
+                        x * Game.blockW + Game.xOffset, Game.H - Game.yOffset);
             }
             for (int y=0; y<=Game.grid[0].length; y++) {
-                g.drawLine(0, y * Game.blockW, Game.W, y * Game.blockW);
+                g.drawLine(Game.xOffset, Game.yOffset + y * Game.blockW,
+                        Game.W - Game.xOffset, y * Game.blockW + Game.yOffset);
             }
         }
 
         // Fill Game.grid
         for (int x=0; x<Game.grid.length; x++) {
             for (int y=0; y<Game.grid[0].length; y++) {
-                if (Game.grid[x][y]) g.fillRect(x*Game.blockW, y*Game.blockW,
-                        Game.blockW, Game.blockW);
+                if (Game.grid[x][y]) {
+                    g.fillRect(x * Game.blockW + Game.xOffset, y * Game.blockW + Game.yOffset,
+                            Game.blockW, Game.blockW);
+                }
             }
         }
     }

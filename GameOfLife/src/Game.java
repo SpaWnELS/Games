@@ -1,5 +1,10 @@
+import Shapes.Glider;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.Arrays;
 
 public class Game {
 
@@ -14,19 +19,22 @@ public class Game {
     static int blockW = 10; // pixel length of each block in the grid
 
     // Aesthetics
-    static Color backgroundColour = Color.WHITE;
-    static Color gridColour = Color.BLACK;
-    static boolean gridVisible = true;
+    static Color backgroundColour = Color.BLACK;
+    static Color gridColour = Color.WHITE;
+    static boolean gridVisible = false;
+    static int xOffset = W / 10;
+    static int yOffset = H / 10;
 
 
     // Events
     static Timer timer;
     boolean spawnAtBeginning = false;
     static boolean pause = false;
-    static int fps = 5;
+    static int fps = 1;
 
     // Game
-    static boolean[][] grid = new boolean[W / blockW][H / blockW];
+    static boolean[][] grid = new boolean[(W - 2*xOffset) / blockW][(H - 2*yOffset) / blockW];
+    static boolean[][] nextGrid = grid.clone();
 
     /**
      * Called upon initialisation of the game.
@@ -34,11 +42,17 @@ public class Game {
      **/
     private void spawn() {
         if (spawnAtBeginning) {
+            /*
             for (int x=0; x<grid.length; x++) {
                 for (int y=0; y<grid[0].length; y++) {
-                    grid[x][y] = Math.random() < 0.1;
+                    grid[x][y] = Math.random() < .09;
                 }
             }
+            */
+            Glider gliderOne = new Glider(this.grid, 10, 10);
+            Glider gliderTwo = new Glider(this.grid, 20, 20);
+            Glider gliderThree = new Glider(this.grid, 30, 30);
+
             spawnAtBeginning = false;
         }
     }
@@ -48,16 +62,21 @@ public class Game {
         if (!pause) {
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[row].length; col++) {
-                    if (willBeAlive(row, col)) grid[row][col] = true;
-                    else grid[row][col] = false;
+                    if (willBeAlive(row, col)) nextGrid[row][col] = true;
+                    else nextGrid[row][col] = false;
                 }
             }
         }
+
+        grid = nextGrid.clone();
 
         panel.repaint();
     }
 
     private boolean willBeAlive(int row, int col) {
+        if (isAlive(row, col)) {
+            System.out.printf("Cell at (%d, %d) has %d neighbours%n", row, col, countNeighbours(row, col));
+        }
         boolean alive = isAlive(row, col);
         int neighbours = countNeighbours(row, col);
 
@@ -101,6 +120,7 @@ public class Game {
         panel.addMouseMotionListener(events);
         panel.addMouseListener(events);
 
+        game.update();
         timer = new Timer(1000 / game.fps, e -> game.update());
         timer.start();
     }
