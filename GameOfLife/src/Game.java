@@ -1,7 +1,3 @@
-import Shapes.Block;
-import Shapes.Pulsar;
-import Shapes.Glider;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,7 +25,7 @@ public class Game {
     static Timer timer;
     boolean spawnAtBeginning = true;
     static boolean pause = false;
-    static int fps = 1;
+    static int fps = 5;
 
     // Game
     static boolean[][] grid = new boolean[(W - 2*xOffset) / blockW][(H - 2*yOffset) / blockW];
@@ -40,8 +36,12 @@ public class Game {
      **/
     private void spawn() {
         if (spawnAtBeginning) {
-            Glider gliderOne = new Glider(grid, 10, 10);
-            Pulsar pulsarOne = new Pulsar(grid, 20, 20);
+            new Shapes.Pulsar(grid, 20, 10);
+            new Shapes.Pulsar(grid, 50, 10);
+            new Shapes.Pulsar(grid, 30, 30);
+            new Shapes.Pulsar(grid, 60, 30);
+            new Shapes.Pulsar(grid, 0, 30);
+            new Shapes.Pulsar(grid, -10, 10);
 
             spawnAtBeginning = false;
         }
