@@ -1,10 +1,9 @@
+import Shapes.Block;
+import Shapes.Pulsar;
 import Shapes.Glider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.util.Arrays;
 
 public class Game {
 
@@ -28,13 +27,12 @@ public class Game {
 
     // Events
     static Timer timer;
-    boolean spawnAtBeginning = false;
+    boolean spawnAtBeginning = true;
     static boolean pause = false;
     static int fps = 1;
 
     // Game
     static boolean[][] grid = new boolean[(W - 2*xOffset) / blockW][(H - 2*yOffset) / blockW];
-    static boolean[][] nextGrid = grid.clone();
 
     /**
      * Called upon initialisation of the game.
@@ -42,16 +40,8 @@ public class Game {
      **/
     private void spawn() {
         if (spawnAtBeginning) {
-            /*
-            for (int x=0; x<grid.length; x++) {
-                for (int y=0; y<grid[0].length; y++) {
-                    grid[x][y] = Math.random() < .09;
-                }
-            }
-            */
-            Glider gliderOne = new Glider(this.grid, 10, 10);
-            Glider gliderTwo = new Glider(this.grid, 20, 20);
-            Glider gliderThree = new Glider(this.grid, 30, 30);
+            Glider gliderOne = new Glider(grid, 10, 10);
+            Pulsar pulsarOne = new Pulsar(grid, 20, 20);
 
             spawnAtBeginning = false;
         }
@@ -59,30 +49,26 @@ public class Game {
 
     private void update() {
 
+        boolean[][] nextGrid = new boolean[grid.length][grid[0].length];
+
         if (!pause) {
             for (int row = 0; row < grid.length; row++) {
                 for (int col = 0; col < grid[row].length; col++) {
-                    if (willBeAlive(row, col)) nextGrid[row][col] = true;
-                    else nextGrid[row][col] = false;
+                    nextGrid[row][col] = willBeAlive(row, col);
                 }
             }
+            grid = nextGrid.clone();
         }
-
-        grid = nextGrid.clone();
 
         panel.repaint();
     }
 
     private boolean willBeAlive(int row, int col) {
-        if (isAlive(row, col)) {
-            System.out.printf("Cell at (%d, %d) has %d neighbours%n", row, col, countNeighbours(row, col));
-        }
         boolean alive = isAlive(row, col);
         int neighbours = countNeighbours(row, col);
 
         if (neighbours == 3) return true;
-        if (neighbours == 2 && alive) return true;
-        else return false;
+        return neighbours == 2 && alive;
     }
     
     private boolean isAlive(int row, int col) {
@@ -121,7 +107,7 @@ public class Game {
         panel.addMouseListener(events);
 
         game.update();
-        timer = new Timer(1000 / game.fps, e -> game.update());
+        timer = new Timer(1000 / fps, e -> game.update());
         timer.start();
     }
 }
